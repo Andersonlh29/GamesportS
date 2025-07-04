@@ -32,25 +32,31 @@ let spritePelota, spriteRaqueta;
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 490;
 
+let canvas;
+
 function preload() {
   sonidoGolpe = loadSound('tennis-ball-hit-151257.mp3');
   sonidoPublico = loadSound('crowd-clapping-and-cheering-effect-272056.mp3');
   sonidoFinal = loadSound('fanfare-1-276819.mp3');
   fuenteLED = loadFont('https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/font/SourceCodePro-Bold.otf');
 
-  // Sprites opcionales
+  // OPCIONALES: Descomentar si tienes imágenes
   // spritePelota = loadImage('pelota.png');
   // spriteRaqueta = loadImage('raqueta.png');
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(GAME_WIDTH, GAME_HEIGHT);
+  centrarCanvas();
   textFont(fuenteLED);
-  inicializarElementos();
   crearBotonesNivel();
+  inicializarElementos();
   crearBotonesJuego();
-  posicionarBotonesNivel();
   posicionarBotonesJuego();
+}
+
+function centrarCanvas() {
+  canvas.position(windowWidth / 2 - GAME_WIDTH / 2, windowHeight / 2 - GAME_HEIGHT / 2);
 }
 
 function inicializarElementos() {
@@ -69,7 +75,11 @@ function inicializarElementos() {
 }
 
 function crearBotonesNivel() {
+  let centroX = windowWidth / 2 - 40;
+  let centroY = windowHeight / 2 - 70;
+
   botonFacil = createButton("Fácil");
+  botonFacil.position(centroX, centroY);
   botonFacil.size(80, 40);
   botonFacil.style('background-color', '#44e141');
   botonFacil.style('color', 'white');
@@ -77,6 +87,7 @@ function crearBotonesNivel() {
   botonFacil.mousePressed(() => seleccionarNivel(1));
 
   botonMedio = createButton("Medio");
+  botonMedio.position(centroX, centroY + 100);
   botonMedio.size(80, 40);
   botonMedio.style('background-color', '#44e141');
   botonMedio.style('color', 'white');
@@ -84,6 +95,7 @@ function crearBotonesNivel() {
   botonMedio.mousePressed(() => seleccionarNivel(2));
 
   botonDificil = createButton("Difícil");
+  botonDificil.position(centroX, centroY + 200);
   botonDificil.size(80, 40);
   botonDificil.style('background-color', '#44e141');
   botonDificil.style('color', 'white');
@@ -109,29 +121,24 @@ function crearBotonesJuego() {
   botonReiniciar.hide();
 }
 
-function posicionarBotonesNivel() {
-  let marcoX = windowWidth / 2 - GAME_WIDTH / 2;
-  let marcoY = windowHeight / 2 - GAME_HEIGHT / 2;
-
-  let centroX = marcoX + GAME_WIDTH / 2 - 40;
-  let centroY = marcoY + GAME_HEIGHT / 2 - 70;
-
-  botonFacil.position(centroX, centroY);
-  botonMedio.position(centroX, centroY + 100);
-  botonDificil.position(centroX, centroY + 200);
-}
-
 function posicionarBotonesJuego() {
-  let marcoX = windowWidth / 2 - GAME_WIDTH / 2;
-  let marcoY = windowHeight / 2 - GAME_HEIGHT / 2;
-
-  botonPausa.position(marcoX + 20, marcoY + 15);
-  botonReiniciar.position(marcoX + 110, marcoY + 15);
+  let cx = windowWidth / 2 - GAME_WIDTH / 2 + 20;
+  let cy = windowHeight / 2 - GAME_HEIGHT / 2 + 15;
+  botonPausa.position(cx, cy);
+  botonReiniciar.position(cx + 90, cy);
 }
 
 function windowResized() {
-  posicionarBotonesNivel();
+  centrarCanvas();
   posicionarBotonesJuego();
+
+  if (seleccionNivel) {
+    let centroX = windowWidth / 2 - 40;
+    let centroY = windowHeight / 2 - 70;
+    botonFacil.position(centroX, centroY);
+    botonMedio.position(centroX, centroY + 100);
+    botonDificil.position(centroX, centroY + 200);
+  }
 }
 
 function seleccionarNivel(nivel) {
@@ -154,9 +161,7 @@ function reiniciarJuego() {
   juegoPausado = false;
   botonPausa.html("Pausar");
   seleccionNivel = true;
-  botonFacil.show();
-  botonMedio.show();
-  botonDificil.show();
+  crearBotonesNivel();
   botonPausa.hide();
   botonReiniciar.hide();
   loop();
@@ -175,11 +180,9 @@ function togglePausa() {
 }
 
 function draw() {
-  background(0);
-  push();
-  translate(windowWidth / 2 - GAME_WIDTH / 2, windowHeight / 2 - GAME_HEIGHT / 2);
+  background(0); // Área exterior oscura
 
-  fill(34, 139, 34);
+  fill(34, 139, 34); // Cancha verde
   rect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
   stroke(255);
@@ -200,16 +203,16 @@ function draw() {
   let minutos = nf(int(tiempoTranscurrido / 60), 2);
   let segundos = nf(tiempoTranscurrido % 60, 2);
 
-  text("TIEMPO", 220, 20);
-  text(`${minutos}:${segundos}`, 220, 40);
-  text(`Jugador: ${puntajeJugador}`, 320, 20);
-  text(`Computadora: ${puntajeComputadora}`, 320, 40);
+  text("TIEMPO", 20, 15);
+  text(`${minutos}:${segundos}`, 20, 35);
+  text(`Jugador: ${puntajeJugador}`, 150, 15);
+  text(`Computadora: ${puntajeComputadora}`, 150, 35);
 
   if (animacionPuntoJugador && millis() - tiempoAnimacionJugador < 1000) {
-    text("+1", 470, 20);
+    text("+1", 270, 15);
   }
   if (animacionPuntoComputadora && millis() - tiempoAnimacionComputadora < 1000) {
-    text("+1", 470, 40);
+    text("+1", 310, 35);
   }
 
   if (mostrarPunto && millis() - tiempoPunto < 1000) {
@@ -225,14 +228,10 @@ function draw() {
     text(mensajeGanador, GAME_WIDTH / 2, GAME_HEIGHT / 2 - 20);
     text("Final del partido", GAME_WIDTH / 2, GAME_HEIGHT / 2 + 20);
     noLoop();
-    pop();
     return;
   }
 
-  if (seleccionNivel) {
-    pop();
-    return;
-  }
+  if (seleccionNivel) return;
 
   if (puntajeJugador >= 5 && !juegoTerminado) {
     juegoTerminado = true;
@@ -245,6 +244,7 @@ function draw() {
   }
 
   dibujarPelota();
+
   pelota.x += pelota.velocidadX;
   pelota.y += pelota.velocidadY;
 
@@ -258,7 +258,7 @@ function draw() {
   if (keyIsDown(DOWN_ARROW)) raquetaJugador.y += 5;
   raquetaJugador.y = constrain(raquetaJugador.y, marcoSuperior.alto, GAME_HEIGHT - marcoInferior.alto - raquetaJugador.alto);
 
-  // IA MEJORADA
+  // IA mejorada
   let centroPelota = pelota.y;
   let centroRaqueta = raquetaComputadora.y + raquetaComputadora.alto / 2;
   if (centroPelota < centroRaqueta - 10) {
@@ -301,8 +301,6 @@ function draw() {
     tiempoAnimacionJugador = millis();
     if (puntajeJugador < 5) sonidoPublico.play();
   }
-
-  pop();
 }
 
 function dibujarRaqueta(raqueta) {
