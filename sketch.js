@@ -92,7 +92,7 @@ function crearBotonesNivel() {
   botonMedio.style('background-color', '#44e141');
   botonMedio.style('color', 'white');
   botonMedio.style('border', '2px solid white');
-  botonMedio.mousePressed(() => seleccionarNivel(2));
+  botonMedio.mousePressed(() => seleccionarNivel(3));
 
   botonDificil = createButton("Difícil");
   botonDificil.position(centroX, centroY + 200);
@@ -100,7 +100,7 @@ function crearBotonesNivel() {
   botonDificil.style('background-color', '#44e141');
   botonDificil.style('color', 'white');
   botonDificil.style('border', '2px solid white');
-  botonDificil.mousePressed(() => seleccionarNivel(3));
+  botonDificil.mousePressed(() => seleccionarNivel(4));
 }
 
 function crearBotonesJuego() {
