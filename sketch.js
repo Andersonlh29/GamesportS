@@ -203,16 +203,16 @@ function draw() {
   let minutos = nf(int(tiempoTranscurrido / 60), 2);
   let segundos = nf(tiempoTranscurrido % 60, 2);
 
-  text("TIEMPO", 20, 15);
-  text(`${minutos}:${segundos}`, 20, 35);
-  text(`Jugador: ${puntajeJugador}`, 150, 15);
-  text(`Computadora: ${puntajeComputadora}`, 150, 35);
+  text("TIEMPO", 100, 15);
+  text(`${minutos}:${segundos}`, 100, 35);
+  text(`Jugador: ${puntajeJugador}`, 200, 15);
+  text(`Computadora: ${puntajeComputadora}`, 200, 35);
 
   if (animacionPuntoJugador && millis() - tiempoAnimacionJugador < 1000) {
-    text("+1", 270, 15);
+    text("+1", 400, 15);
   }
   if (animacionPuntoComputadora && millis() - tiempoAnimacionComputadora < 1000) {
-    text("+1", 310, 35);
+    text("+1", 400, 35);
   }
 
   if (mostrarPunto && millis() - tiempoPunto < 1000) {
