@@ -122,7 +122,7 @@ function crearBotonesJuego() {
 }
 
 function posicionarBotonesJuego() {
-  let cx = windowWidth / 2 - GAME_WIDTH / 2 + 20;
+  let cx = windowWidth / 2 - GAME_WIDTH / 2 + GAME_WIDTH - 200; 
   let cy = windowHeight / 2 - GAME_HEIGHT / 2 + 15;
   botonPausa.position(cx, cy);
   botonReiniciar.position(cx + 90, cy);
