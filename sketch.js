@@ -65,9 +65,9 @@ function inicializarElementos() {
     y: GAME_HEIGHT / 2,
     diametro: 20,
     velocidadX: 5,
-    velocidadY: 3
+    velocidadY: 0
   };
-  raquetaJugador = { x: 5, y: GAME_HEIGHT / 2 - 40, ancho: 10, alto: 80 };
+   raquetaJugador = { x: 5, y: GAME_HEIGHT / 2 - 40, ancho: 10, alto: 80 };
   raquetaComputadora = { x: GAME_WIDTH - 15, y: GAME_HEIGHT / 2 - 40, ancho: 10, alto: 80 };
   marcoSuperior = { alto: 60 };
   marcoInferior = { alto: 10 };
