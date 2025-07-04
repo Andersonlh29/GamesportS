@@ -15,7 +15,7 @@ let tiempoAnimacionComputadora = 0;
 let juegoTerminado = false;
 let mensajeGanador = "";
 let fuenteLED;
-let velocidadComputadora = 2.8;
+let velocidadComputadora = 3;
 let seleccionNivel = true;
 
 let botonFacil, botonMedio, botonDificil, botonReiniciar, botonPausa;
@@ -142,7 +142,7 @@ function windowResized() {
 }
 
 function seleccionarNivel(nivel) {
-  velocidadComputadora = nivel === 1 ? 2 : nivel === 2 ? 3 : 4;
+  velocidadComputadora = nivel === 1 ? 2 : nivel === 3 ? 3 : 4;
   seleccionNivel = false;
   botonFacil.hide();
   botonMedio.hide();
