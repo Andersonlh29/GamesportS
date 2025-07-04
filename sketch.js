@@ -38,17 +38,18 @@ function preload() {
   sonidoFinal = loadSound('fanfare-1-276819.mp3');
   fuenteLED = loadFont('https://cdnjs.cloudflare.com/ajax/libs/topcoat/0.8.0/font/SourceCodePro-Bold.otf');
 
-  // OPCIONALES: Descomenta si tienes imágenes
+  // Sprites opcionales
   // spritePelota = loadImage('pelota.png');
   // spriteRaqueta = loadImage('raqueta.png');
 }
 
 function setup() {
-  createCanvas(GAME_WIDTH, GAME_HEIGHT);
+  createCanvas(windowWidth, windowHeight);
   textFont(fuenteLED);
-  crearBotonesNivel();
   inicializarElementos();
+  crearBotonesNivel();
   crearBotonesJuego();
+  posicionarBotonesNivel();
   posicionarBotonesJuego();
 }
 
@@ -68,11 +69,7 @@ function inicializarElementos() {
 }
 
 function crearBotonesNivel() {
-  let centroX = windowWidth / 2 - 40;
-  let centroY = windowHeight / 2 - 70;
-
   botonFacil = createButton("Fácil");
-  botonFacil.position(centroX, centroY);
   botonFacil.size(80, 40);
   botonFacil.style('background-color', '#44e141');
   botonFacil.style('color', 'white');
@@ -80,7 +77,6 @@ function crearBotonesNivel() {
   botonFacil.mousePressed(() => seleccionarNivel(1));
 
   botonMedio = createButton("Medio");
-  botonMedio.position(centroX, centroY + 100);
   botonMedio.size(80, 40);
   botonMedio.style('background-color', '#44e141');
   botonMedio.style('color', 'white');
@@ -88,7 +84,6 @@ function crearBotonesNivel() {
   botonMedio.mousePressed(() => seleccionarNivel(2));
 
   botonDificil = createButton("Difícil");
-  botonDificil.position(centroX, centroY + 200);
   botonDificil.size(80, 40);
   botonDificil.style('background-color', '#44e141');
   botonDificil.style('color', 'white');
@@ -114,22 +109,29 @@ function crearBotonesJuego() {
   botonReiniciar.hide();
 }
 
+function posicionarBotonesNivel() {
+  let marcoX = windowWidth / 2 - GAME_WIDTH / 2;
+  let marcoY = windowHeight / 2 - GAME_HEIGHT / 2;
+
+  let centroX = marcoX + GAME_WIDTH / 2 - 40;
+  let centroY = marcoY + GAME_HEIGHT / 2 - 70;
+
+  botonFacil.position(centroX, centroY);
+  botonMedio.position(centroX, centroY + 100);
+  botonDificil.position(centroX, centroY + 200);
+}
+
 function posicionarBotonesJuego() {
-  let cx = windowWidth / 2 - GAME_WIDTH / 2 + 20;
-  let cy = windowHeight / 2 - GAME_HEIGHT / 2 + 15;
-  botonPausa.position(cx, cy);
-  botonReiniciar.position(cx + 90, cy);
+  let marcoX = windowWidth / 2 - GAME_WIDTH / 2;
+  let marcoY = windowHeight / 2 - GAME_HEIGHT / 2;
+
+  botonPausa.position(marcoX + 20, marcoY + 15);
+  botonReiniciar.position(marcoX + 110, marcoY + 15);
 }
 
 function windowResized() {
+  posicionarBotonesNivel();
   posicionarBotonesJuego();
-  if (seleccionNivel) {
-    let centroX = windowWidth / 2 - 40;
-    let centroY = windowHeight / 2 - 70;
-    botonFacil.position(centroX, centroY);
-    botonMedio.position(centroX, centroY + 100);
-    botonDificil.position(centroX, centroY + 200);
-  }
 }
 
 function seleccionarNivel(nivel) {
@@ -152,7 +154,9 @@ function reiniciarJuego() {
   juegoPausado = false;
   botonPausa.html("Pausar");
   seleccionNivel = true;
-  crearBotonesNivel();
+  botonFacil.show();
+  botonMedio.show();
+  botonDificil.show();
   botonPausa.hide();
   botonReiniciar.hide();
   loop();
@@ -171,7 +175,7 @@ function togglePausa() {
 }
 
 function draw() {
-  background(0); // Fondo oscuro
+  background(0);
   push();
   translate(windowWidth / 2 - GAME_WIDTH / 2, windowHeight / 2 - GAME_HEIGHT / 2);
 
@@ -196,16 +200,16 @@ function draw() {
   let minutos = nf(int(tiempoTranscurrido / 60), 2);
   let segundos = nf(tiempoTranscurrido % 60, 2);
 
-  text("TIEMPO", 250, 15);
-  text(`${minutos}:${segundos}`, 250, 35);
-  text(`Jugador: ${puntajeJugador}`, 380, 15);
-  text(`Computadora: ${puntajeComputadora}`, 380, 35);
+  text("TIEMPO", 220, 20);
+  text(`${minutos}:${segundos}`, 220, 40);
+  text(`Jugador: ${puntajeJugador}`, 320, 20);
+  text(`Computadora: ${puntajeComputadora}`, 320, 40);
 
   if (animacionPuntoJugador && millis() - tiempoAnimacionJugador < 1000) {
-    text("+1", 490, 15);
+    text("+1", 470, 20);
   }
   if (animacionPuntoComputadora && millis() - tiempoAnimacionComputadora < 1000) {
-    text("+1", 530, 35);
+    text("+1", 470, 40);
   }
 
   if (mostrarPunto && millis() - tiempoPunto < 1000) {
@@ -325,4 +329,5 @@ function dibujarPelota() {
     noStroke();
   }
 }
+
 
