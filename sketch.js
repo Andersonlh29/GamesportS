@@ -15,7 +15,7 @@ let tiempoAnimacionComputadora = 0;
 let juegoTerminado = false;
 let mensajeGanador = "";
 let fuenteLED;
-let velocidadComputadora = 3;
+let velocidadComputadora = 2.8;
 let seleccionNivel = true;
 
 let botonFacil, botonMedio, botonDificil, botonReiniciar, botonPausa;
